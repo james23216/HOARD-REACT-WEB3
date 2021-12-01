@@ -273,7 +273,7 @@ function Home() {
                 </StyledSelectTokenGroup>
               : selectToken
                 ? <StyledSelectTokenGroup>
-                    <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} />
+                    <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} className={`${selectToken.purchaserWallet ? 'walletOpacity' : ''}`}  />
                     <StyledSelectTokenNumber>HOARD {selectToken.incrementNumberCoin}</StyledSelectTokenNumber>
                     <StyledSelectTokenStatus>{ selectToken.purchaserWallet ? 'RESERVED' : 'AVAILABLE' }</StyledSelectTokenStatus>
                     { selectToken.purchaserWallet ? <p className="text-wrap wallet-addr reserved"> {selectToken.purchaserWallet} </p> : null  }
