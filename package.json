@@ -21,9 +21,7 @@
   "author": "Rammon Zook",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
-    "build": "react-scripts build",
-    "heroku-postbuild": "react-scripts build --prod"
+    "start": "node server.js"
   },
   "browserslist": {
     "production": [
