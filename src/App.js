@@ -485,6 +485,7 @@ function App() {
                   className="img"
                   src={image.wordPressPathAndName}
                   key={index}
+                  style={{ cursor: 'pointer' }}
                   onClick={() => {
                     loadTokenData(index);
                   }}

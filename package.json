@@ -1,7 +1,7 @@
 {
-  "name": "hashlips_nft_minting_dapp",
+  "name": "Hoard_Token_Project",
   "version": "1.0.0",
-  "description": "HashLips minting dapp is a quick and easy way to connect your smart contract and start minting NFTs.",
+  "description": "We need the community to be able to see the coins before launch and have the opportunity to reserve them, trade them and talk about them",
   "private": true,
   "dependencies": {
     "@material-tailwind/react": "^0.3.4",
@@ -18,7 +18,7 @@
     "web3": "^1.5.1",
     "web3-eth-contract": "^1.5.2"
   },
-  "author": "Daniel Eugene Botha (HashLips)",
+  "author": "Rammon Zook",
   "license": "MIT",
   "scripts": {
     "start": "react-scripts start",

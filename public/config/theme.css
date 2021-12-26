@@ -1,5 +1,5 @@
 :root {
-  --primary: #050505;
+  --primary: #000;
   --primary-text: #f7f3f3;
   --secondary: #222022;
   --secondary-text: #ffffff;
@@ -21,9 +21,8 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #00ffee;
+  background-color: #000;
   border-radius: 20px;
-  border: 3px solid #07ff00f7;
 }
 
 .photos {
