@@ -1,38 +1,23 @@
 {
-  "name": "Hoard_Token_Project",
+  "name": "hoard",
   "version": "1.0.0",
-  "description": "We need the community to be able to see the coins before launch and have the opportunity to reserve them, trade them and talk about them",
-  "private": true,
-  "dependencies": {
-    "@material-tailwind/react": "^0.3.4",
-    "lodash": "^4.17.21",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-infinite-scroll-component": "^6.1.0",
-    "react-redux": "^7.2.4",
-    "react-scripts": "4.0.3",
-    "redux": "^4.1.1",
-    "redux-thunk": "^2.3.0",
-    "styled-components": "^5.3.0",
-    "web-vitals": "^1.0.1",
-    "web3": "^1.5.1",
-    "web3-eth-contract": "^1.5.2"
-  },
-  "author": "Rammon Zook",
-  "license": "MIT",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/james23216/HOARD-REACT-WEB3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/james23216/HOARD-REACT-WEB3/issues"
+  },
+  "homepage": "https://github.com/james23216/HOARD-REACT-WEB3#readme",
+  "dependencies": {
+    "express": "^4.17.2"
   }
 }
