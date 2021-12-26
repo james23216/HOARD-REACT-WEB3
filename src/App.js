@@ -345,7 +345,7 @@ function App() {
   const getData = () => {
     if (blockchain.account !== "" && blockchain.smartContract !== null) {
       dispatch(fetchData(blockchain.account));
-    }
+    } 
   };
 
   const getConfig = async () => {
