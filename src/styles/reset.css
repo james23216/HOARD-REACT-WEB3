@@ -167,3 +167,17 @@ div {
   user-select: none;
   -o-user-select: none;
 }
+
+.w-auto {
+  width: 90% !important;
+}
+
+@media (min-width: 768px) {
+  .w-auto {
+    width: 40% !important;
+  }
+}
+
+.z-50 {
+  z-index: 99999999;
+}

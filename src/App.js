@@ -4,14 +4,17 @@ import { connect } from "./redux/blockchain/blockchainActions";
 import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
-import "@material-tailwind/react/tailwind.css";
 import Modal from "@material-tailwind/react/Modal";
 import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
 import ModalFooter from "@material-tailwind/react/ModalFooter";
 import Button from "@material-tailwind/react/Button";
 
+import _ from 'lodash';
+import chunk from 'lodash/chunk';
+
 import { metadata } from "./utils/metadata";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const truncate = (input, len) =>
   input.length > len ? `${input.substring(0, len)}...` : input;
@@ -34,6 +37,7 @@ export const StyledLogo = styled.img`
   width: 25%;
   transition: width 0.5s;
   margin-left: 0%;
+  cursor: pointer;
   @media (min-width: 768px) {
     width: 17%;
     margin-left: -13%
@@ -102,7 +106,7 @@ export const StyledScanInput = styled.input`
   width: 55%;
   color: black;
   margin-left: 10px;
-  padding: 2px;
+  padding: 1px;
 `;
 
 export const StyledMenuIcon = styled.div`
@@ -179,7 +183,7 @@ export const StyledMobileClose = styled.p`
 
 export const StyledTokenImgSection = styled.div`
   position: relative;
-  margin-top: 7%;
+  margin-top: 13%;
   display: flex;
   flex-direction: row;
   -ms-flex-wrap: wrap;
@@ -187,7 +191,10 @@ export const StyledTokenImgSection = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 100%
+  max-width: 100%;
+  @media (min-width: 768px) {
+    margin-top: 7%;
+  }
 `;
 
 export const StyledTokenImg  = styled.img`
@@ -198,9 +205,63 @@ export const StyledTokenImg  = styled.img`
   cursor: pointer
 `;
 
+export const StyledSelectTokenGroup = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const StyledSelectTokenImg = styled.img`
+  position: relative;
+  width: 40%;
+
+`;
+
+export const StyledSelectTokenNumber = styled.p`
+  color: #000;
+  font-size: 18px;
+  line-height: 1
+`;
+
+export const StyledSelectTokenStatus = styled.p`
+  color: #000;
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1;
+  margin-top: 2%
+`;
+
+export const StyledSelectTokenDetailBlock = styled.div`
+  color: #000;
+  font-size: 15px;
+  width: 80%;
+  display: flex;
+  margin-top: 5%
+`;
+
+export const StyledSelectTokenDetailLeft = styled.div`
+  width: 50%;
+  text-align: left;
+`;
+
+export const StyledSelectTokenDetailRight = styled.div`
+  width: 50%;
+  text-align: left;  
+`;
+
+export const StyledSelectTokenDetailFound = styled.p`
+  line-height: 1.5
+`;
+
 function App() {
   const [status, setStatus] = useState("-200%");
-  const [showModal, setShowModal] = useState(true); 
+  const [showModal, setShowModal] = useState(false); 
+  const [metaJson, setMetaJson] = useState([]); 
+  const [selectToken, setSelectToken] = useState({}); 
+  const [scanToken, setScanToken] = useState(''); 
 
   const dispatch = useDispatch();
   const blockchain = useSelector((state) => state.blockchain);
@@ -226,6 +287,12 @@ function App() {
     MARKETPLACE_LINK: "",
     SHOW_BACKGROUND: false,
   });
+
+  const [pageIndex, setPageIndex] = useState(1);
+
+  const [count, setCount] = useState(30);
+
+  const [products, setProducts] = useState([]);
 
   const claimNFTs = () => {
     let cost = CONFIG.WEI_COST;
@@ -292,14 +359,35 @@ function App() {
     SET_CONFIG(config);
   };
 
-  const loadTokenData = (index) => {
-    
+  const loadTokenData = (idx) => {
+    if (metadata && metadata.length > 0) {
+      setSelectToken(metadata[idx]);
+    }
     setShowModal(true);
   }
 
   const closeModal = () => { 
     setShowModal(false);
-}
+    setSelectToken({});
+  }
+
+  const handleScanInput = (e) => {
+    if (e.target.value === '') {      
+      setScanToken('');
+      setProducts([...metadata.slice((pageIndex - 1) * count, pageIndex * count)]);
+    } else { 
+      setScanToken(e.target.value);
+      if (metadata && metadata.length > 0) {
+        filterProduct(e.target.value);
+        window.scrollTo(0,0);
+      }
+    }
+  }
+
+  const filterProduct = (keyword) => {
+    let tProducts = _.filter(metadata, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword));
+    setProducts([...tProducts]);
+  }
 
   useEffect(() => {
     getConfig();
@@ -309,9 +397,22 @@ function App() {
     getData();
   }, [blockchain.account]);
 
-  console.log("metadata======", metadata)
+  useEffect(() => {
+    fetchMoreData();
+  }, [])
 
-  let tempMeta = metadata.slice(0, 100);
+  const fetchMoreData = () => {
+    if (scanToken === '') {
+      setProducts([...products, ...metadata.slice((pageIndex - 1) * count, pageIndex * count)]);
+    } else {
+      filterProduct(scanToken);
+    }
+    setPageIndex(pageIndex + 1);
+  }
+
+  const addDefaultSrc = (ev) => {
+    ev.target.src = 'https://via.placeholder.com/400';
+  }
 
   return (
     <s.Screen>
@@ -339,11 +440,18 @@ function App() {
                 SCAN
                 <StyledScanInput 
                   type="number"
+                  onChange={(e) => handleScanInput(e)}
                 />
               </StyledRoundButton>
             </s.Container>
           </StyledButtonGroup>        
-          <StyledLogo alt={"example"} src={"/images/HoardToken.png"} />
+          <StyledLogo 
+            alt={"example"} 
+            src={"/images/HoardToken.png"}
+            onClick={() => {
+              window.scrollTo(0,0);
+            }} 
+          />
           <StyledIconGroup>
             <StyledLink 
               target={"_blank"} 
@@ -363,24 +471,28 @@ function App() {
             <StyledMenuImg alt={"menu"} onClick={() => setStatus("0%")} src={"/images/icon_menu.png"}></StyledMenuImg>
           </StyledMenuIcon>
         </StyledHeader>
-       
-        <StyledTokenImgSection>
-          { 
-            tempMeta && tempMeta.map((o, idx) => {
-              return (
-                <StyledTokenImg 
-                  alt={`Hoard Token ${ idx }`} 
-                  key={idx} 
-                  src={o.wordPressPathAndName} 
-                  onClick={(idx) => {
-                      loadTokenData(idx);
-                    }
-                  }
-                />             
-              );
-            }) 
-          }         
-        </StyledTokenImgSection>
+        <InfiniteScroll
+          dataLength={products.length}
+          next={fetchMoreData}
+          hasMore={true}
+        >
+          <div className="photos">
+            {
+              products.map((image, index) => (
+                <img
+                  onError={addDefaultSrc}
+                  alt={`Hoard Token ${ index }`} 
+                  className="img"
+                  src={image.wordPressPathAndName}
+                  key={index}
+                  onClick={() => {
+                    loadTokenData(index);
+                  }}
+                />
+              ))
+            }
+          </div>
+        </InfiniteScroll>
         <StyledMyNavSide style={{ top: status }}>   
           <StyledMyNavSideDiv>       
             <StyledMobileButtonGroup>
@@ -400,6 +512,7 @@ function App() {
                   SCAN
                   <StyledScanInput 
                     type="number"
+                    onChange={(e) => handleScanInput(e)}
                   />
                 </StyledRoundButton>
               </s.Container>
@@ -422,39 +535,35 @@ function App() {
             <StyledMobileClose onClick={() => setStatus("-200%")}>&times;</StyledMobileClose>     
           </StyledMyNavSideDiv>    
         </StyledMyNavSide>  
-        
+        <Modal size="regular" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>
+          <ModalHeader toggler={() => closeModal()}>
+              This is a Hoard Token
+          </ModalHeader>
+          <ModalBody>      
+            <StyledSelectTokenGroup>
+              <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} />
+              <StyledSelectTokenNumber>HOARD {selectToken.incrementNumberCoin}</StyledSelectTokenNumber>
+              <StyledSelectTokenStatus>AVAILABLE</StyledSelectTokenStatus>
+              <StyledSelectTokenDetailBlock>
+                <StyledSelectTokenDetailLeft>
+                  <StyledSelectTokenDetailFound>Found By:</StyledSelectTokenDetailFound> 
+                  <StyledSelectTokenDetailFound>Where:</StyledSelectTokenDetailFound> 
+                  <StyledSelectTokenDetailFound>Date:</StyledSelectTokenDetailFound>                
+                  <StyledSelectTokenDetailFound>Coin Age:</StyledSelectTokenDetailFound>                
+                  <StyledSelectTokenDetailFound>Metal:</StyledSelectTokenDetailFound>                
+                </StyledSelectTokenDetailLeft>
+                <StyledSelectTokenDetailRight>
+                  <StyledSelectTokenDetailFound>{selectToken.firstname} / {selectToken.surname}</StyledSelectTokenDetailFound> 
+                  <StyledSelectTokenDetailFound>Country</StyledSelectTokenDetailFound> 
+                  <StyledSelectTokenDetailFound>{selectToken.whenTheyFoundItMonth}&nbsp;{selectToken.whenTheyFoundItDay}&nbsp;{selectToken.whenTheyFoundItYear}</StyledSelectTokenDetailFound>                
+                  <StyledSelectTokenDetailFound>{selectToken.coinageOfCoin}</StyledSelectTokenDetailFound>                
+                  <StyledSelectTokenDetailFound>{selectToken.metal}</StyledSelectTokenDetailFound>      
+                </StyledSelectTokenDetailRight>                              
+              </StyledSelectTokenDetailBlock>
+            </StyledSelectTokenGroup>
+          </ModalBody>
+        </Modal>
       </s.Container>
-      <Modal size="md" active={showModal} toggler={() => closeModal()}>
-        <ModalHeader toggler={() => closeModal()}>
-            You will get a free T-Shirt
-        </ModalHeader>
-        <ModalBody>      
-          asdf
-        </ModalBody>
-        <ModalFooter>
-            <Button 
-                color="red"
-                buttonType="link"
-                onClick={() => closeModal()}
-                ripple="dark"
-            >
-                Close
-            </Button>                                    
-            <Button
-                color="green"
-                type="submit"
-                
-                ripple="light"
-            >
-                Save Changes
-            </Button>
-        </ModalFooter>
-      </Modal>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="grid grid-cols-2 text-red-100 red">
-          asdf
-        </div>
-      </div>
     </s.Screen>
   );
 }
