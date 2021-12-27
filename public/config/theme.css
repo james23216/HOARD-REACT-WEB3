@@ -8,7 +8,13 @@
 }
 
 body {
-  padding-top: 70px !important;
+  padding-top: 6% !important;
+}
+
+@media (min-width: 2400px) {
+  body {
+    padding-top: 5% !important;
+  }
 }
 
 body::-webkit-scrollbar {
@@ -80,5 +86,11 @@ body::-webkit-scrollbar-thumb {
   .photos img {
     width: 100%;
     height: 100%;
+  }
+}
+
+@media screen and ( max-width: 768px ) {
+  .animation {
+    animation-name: false !important;
   }
 }
