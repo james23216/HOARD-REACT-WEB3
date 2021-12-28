@@ -1,5 +1,6 @@
 const initialState = {
-  keyword: ''
+  keyword: '',
+  metaData: []
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -9,6 +10,13 @@ const commonReducer = (state = initialState, action) => {
         ...state,
         keyword: action.payload.keyword
       };
+      break;
+    case "LOAD_METADATA":
+      return {
+        ...state,
+        metaData: action.payload
+      };
+      break;
     default:
       return state;
   }

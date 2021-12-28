@@ -6,10 +6,9 @@ import ModalBody from "@material-tailwind/react/ModalBody";
 
 import _ from 'lodash';
 import chunk from 'lodash/chunk';
-import { metadata } from "../utils/metadata";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from "react-redux";
-
+import { loadMetaData } from '../redux/common/commonActions';
 
 export const StyledSelectTokenGroup = styled.div`
   position: relative;
@@ -73,9 +72,11 @@ function Home() {
 
   const [products, setProducts] = useState([]);
 
+  const dispatch = useDispatch();
+
   const loadTokenData = (idx) => {
-    if (metadata && metadata.length > 0) {
-      setSelectToken(metadata[idx]);
+    if (common.metaData && common.metaData.length > 0) {
+      setSelectToken(common.metaData[idx]);
     }
     setShowModal(true);
   }
@@ -86,21 +87,27 @@ function Home() {
   }
 
   const filterProduct = (keyword) => {
-    let tProducts = _.filter(metadata, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword));
+    let tProducts = _.filter(common.metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword));
     setProducts([...tProducts]);
   }
 
   useEffect(() => {
-    fetchMoreData();
+    dispatch(loadMetaData());
   }, []);
 
   useEffect(() => {
     searchProduct(common.keyword);
   }, [common.keyword]);
 
+  useEffect(() => {
+    fetchMoreData();
+    console.log('loaded metadata: ', common.metaData);
+  }, [common.metaData]);
+
   const fetchMoreData = () => {
     if (common.keyword === '') {
-      setProducts([...products, ...metadata.slice((pageIndex - 1) * count, pageIndex * count)]);
+      let metaData = Object.assign([], common.metaData);
+      setProducts([...products, ...metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
     } else {
       filterProduct(common.keyword);
     }
@@ -109,9 +116,9 @@ function Home() {
 
   const searchProduct = (keyword) => {
     if (keyword === '') { 
-      setProducts([...metadata.slice((pageIndex - 1) * count, pageIndex * count)]);
+      setProducts([...common.metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
     } else { 
-      if (metadata && metadata.length > 0) {
+      if (common.metaData && common.metaData.length > 0) {
         filterProduct(keyword);
         window.scrollTo(0,0);
       }
@@ -136,7 +143,7 @@ function Home() {
                 onError={addDefaultSrc}
                 alt={`Hoard Token ${ index }`} 
                 className="img"
-                src={image.wordPressPathAndName}
+                src={image.word_press_path_and_name}
                 key={index}
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
@@ -153,7 +160,7 @@ function Home() {
         </ModalHeader>
         <ModalBody>      
             <StyledSelectTokenGroup>
-            <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} />
+            <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.word_press_path_and_name} />
             <StyledSelectTokenNumber>HOARD {selectToken.incrementNumberCoin}</StyledSelectTokenNumber>
             <StyledSelectTokenStatus>AVAILABLE</StyledSelectTokenStatus>
             <StyledSelectTokenDetailBlock>
