@@ -10,6 +10,7 @@ import { metadata } from "../utils/metadata";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from "react-redux";
 
+import { Radix } from '@radixdlt/application'
 
 export const StyledSelectTokenGroup = styled.div`
   position: relative;
@@ -61,6 +62,11 @@ export const StyledSelectTokenDetailRight = styled.div`
 export const StyledSelectTokenDetailFound = styled.p`
   line-height: 1.5
 `;
+
+/* const radix = Radix.create()
+    .login('xxxxxxxxx')
+    .connect(new URL('https://api.radixdlt.com/rpc'))
+    .subscribe(() => console.log(`✅ TokenTransfer completed successfully.`)); */
 
 function Home() {
   const [showModal, setShowModal] = useState(false); 
