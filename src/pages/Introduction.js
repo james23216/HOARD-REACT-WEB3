@@ -3,54 +3,150 @@ import ScrollAnimation from "react-animate-on-scroll";
 
 function Introduction() {
     return (
-        <div className="pt-10 text-center text-white w-full md:w-3/5">
-          <div className="font-bold text-6xl">
+        <div className="pt-16 md:pt-10 text-center text-white w-full md:w-3/5">
+          <div className="text-wrap font-bold text-6xl">
             About
           </div>
-          <div className="font-bold text-3xl mt-2">
-            10,000 unique pixelart scorpions
+          <div className="text-wrap font-bold text-3xl mt-2">
+            THE HOARD COLLECTION CONSISTS OF 10,000 UNIQUE HOARD COINS INFLUENCED BY SEVERAL HISTORICAL ERA'S.
           </div>
-          <div className="mt-5 text-lg">
-            This is an NFT project I never finished for a different ledger tech, hence the "abandoned" scorpions name. Writing smart contracts for the tech in question was too hard, and I'm lazy and would rather be making art.
+          <div className="text-wrap font-bold text-3xl mt-8">
+            INSTRUCTIONS
           </div>
-          <div className="mt-5 text-lg">
-            After getting really into Radix I decided it might be worth it to release them on that platform instead.
+          <div className="text-wrap font-bold text-3xl mt-1 opacity-90 hoard-coin">
+            HOARD YOUR COINS
           </div>
-          <div className="mt-5 text-lg">
-            While you're here please check out my other project, Radical Strikers, which is a game that will feature NFT items built on Radix.
+          <div className="text-wrap font-bold text-xl mt-2 text-left">
+            HOARD WALLET ADDRESS:
           </div>
-          <div className="font-bold text-3xl mt-5">
-            Instructions
+          <div className="text-wrap mt-1 text-lg text-left">
+            You can reserve your HOARD by sending XRD (Radix Tokens) to the HOARD WALLET address below.
           </div>
-          <div className="mt-3 text-lg">
-            Include the "#" sign followed by the full scorpion numbers, including leading 0s, in the transaction message (eg. "# 0012, 0123"), unencrypted. Please lookup the numbers you are reserving to make sure they are not reserved already. These instructions are very important! If not followed exactly, your funds will be sent back, subject to -1 XRD to cover transaction fees.
+          <div className="text-wrap mt-1 text-lg text-left  w-full">
+            rdx1qsp5hfmupgdgxa3akxtyl0thaudzu4zj4547znru58kg09tkdtz6qjg35gf0e
           </div>
-          <div className="mt-3 text-lg">
-            You will receive a SCORP token for each that will be convertible to the NFT when Radix Babylon launches.
+          <div className="text-wrap font-bold text-xl mt-2 text-left">
+            EACH HOARD TOKEN IS 25 XRD:
           </div>
-          <div className="font-bold text-3xl mt-5">
-            Trading
+          <div className="text-wrap mt-1 text-lg text-left">
+            Add a note matching the units you have purchased. (DO NOT ENCRYPT)
           </div>
-          <div className="mt-3 text-lg">
-            Trading is handled manually for now. Trades are subject to a 10% royalty fee (minimum 10 xrd). The process is as follows:
+          <div className="text-wrap font-bold text-xl mt-2 text-left">
+            HOARD TOKEN/S WILL BE SENT BACK TO YOUR WALLET IN RETURN:
           </div>
-          <div className="mt-3 text-lg">
-            Make sure both parties agree to the terms ahead of sending anything anywhere.
+          <div className="text-wrap mt-1 text-lg text-left">
+            This is currently a manual process right now, please be patient.
           </div>
-          <div className="mt-3 text-lg">
-            Send the XRD or SCORP you are trading to the Abandoned Scorpions wallet address above. NOT each others' wallets!
+          <div className="text-wrap font-bold text-xl mt-2 text-left">
+            FIND US HERE FOR VERIFICATION:
           </div>
-          <div className="mt-3 text-lg">
-            If there is no XRD being traded, please send an additional transaction with the 10 xrd trading fee from either wallet with the message "trading fee".
+          <div className="text-wrap mt-1 text-lg text-left">
+            https://explorer.radixdlt.com/#/accounts/rdx1qsp5hfmupgdgxa3akxtyl0thaudzu4zj4547znru58kg09tkdtz6qjg35gf0e
           </div>
-          <div className="mt-3 text-lg">
-            If there is a match there, the trade will be finalized the next time I process the trade requests. The recipient would receive 70 xrd (80 - 10 trading fee), and you would recieve 2 SCORP tokens. The database will be updated to reflect the new ownership. If you wish to cancel a pending trade, please get in touch via telegram or email.
+          <div className="text-wrap font-bold text-xl mt-2 text-left">
+            USE THE OFFICIAL WALLET HERE:
           </div>
-          <div className="font-bold text-3xl mt-5">
-            Policy
+          <div className="text-wrap mt-1 text-lg  text-left">
+            https://wallet.radixdlt.com/
           </div>
-          <div className="mt-3 text-lg">
-            Please be sure to read the policy page for specifics on how the reservations work and more.
+          <div className="text-wrap mt-1 text-xl text-left font-bold ">
+            ONLY USE RADIX'S NATIVE TOKEN (XRD):
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The official Radix Wallet does NOT except ethereum wrapped Radix Tokens (EXRD).
+          </div>
+          <div className="text-wrap mt-1 text-lg text-left">
+            https://learn.radixdlt.com/article/how-can-i-purchase-xrd-and-exrd-tokens
+          </div>
+          <div className="text-wrap font-bold text-3xl mt-8">
+            TRADING
+          </div>
+          <div className="text-wrap font-bold text-lg mt-2">
+            THE HOARD COLLECTION CONSISTS OF 10,000 UNIQUE HOARD COINS INFLUENCED BY SEVERAL HISTORICAL ERA'S.
+          </div>
+          <div className="text-wrap font-bold text-lg mt-1">
+            You both negotiate the transaction through the HOARD wallet ONLY as we have to change the reserve list which will be reflected on the website: rdx1qsp5hfmupgdgxa3akxtyl0thaudzu4zj4547znru58kg09tkdtz6qjg35gf0e 
+          </div>
+          <div className="text-wrap font-bold text-lg mt-1">
+            Please do not encrypt or we will not be able to see the negociation. 
+          </div>
+          <div className="text-wrap mt-3 text-xl text-left font-bold ">
+            SWAP A TOKEN:
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The Transaction should include 'swap' in the notes.
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The 'swap' OF A HOARD TOKEN is swapping like for like.
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            If this is a one for one swap, then you just need to add the minimum 10 xrd (from each wallet - 20 in total) trading fee and a note saying "swap".
+          </div>
+          <div className="text-wrap mt-2 text-xl text-left font-bold ">
+            An Example of swapping a HOARD token could be:
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            Hoard Member 1 : Swap 00001 for 10000 Trading fee 10 xrd
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            Hoard Member 2 : Swap 10000 for 00001 Trading fee 10 xrd
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The Hoard Tokens can stay in your wallets as its a 1-1 'swap'
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            We will then change the database to reflect the swap once we have a pair.
+          </div>
+          <div className="text-wrap mt-2 text-xl text-left font-bold ">
+            SALE (sell a token):
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The 'sell' is selling the coin/s and the 'buy' is buying the coins. 
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            How is this processed?
+          </div>
+          <div className="text-wrap mt-2 text-xl text-left font-bold ">
+            An Example of selling a HOARD token could be:
+          </div>
+          <div className="text-wrap mt-2 text-xl text-left font-bold ">
+            Hoard Member 1 wants to buy a HOARD token from Hoard Member 2 for 200 XRD they would add in the notes as follows: 
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            Hoard Member 1 : Sell 00001 for 200 xrd - you send 8 HOARD Tokens to our wallet address 
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            rdx1qsp5hfmupgdgxa3akxtyl0thaudzu4zj4547znru58kg09tkdtz6qjg35gf0e
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            Hoard Member 2 : Buy  00001 for 200 xrd - you send 200 xrd to our wallet address (above) we send HOARD 1 the 200 XRD less or 10% (20 xrd) then you recieve 8 HOARD Tokens.
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            If multiple tokens are swapped add a comma after each token numeric 00001,00002,00003.
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            The database will then be updated to reflect this.
+          </div>
+          <div className="text-wrap font-bold text-3xl mt-8">
+            DISCLAIMER
+          </div>
+          <div className="text-wrap font-bold text-lg mt-2">
+            The Hoard Team will NOT be held responsible if your transactions are incorrect. Please make sure our address is accurate (see below). You are advised to NOT use any ethereum wallets for sending XRD tokens to us. Wallet address here: rdx1qsp5hfmupgdgxa3akxtyl0thaudzu4zj4547znru58kg09tkdtz6qjg35gf0e
+          </div>
+          <div className="text-wrap mt-3 text-xl text-left font-bold ">
+            REACH US:
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            TELEGRAM : https://t.me/HOARDTOKEN
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            TWITTER  : https://twitter.com/HOARDTOKEN
+          </div>
+          <div className="text-wrap mt-1 text-lg  text-left">
+            EMAIL : mail@hoardtoken.com
+          </div>
+          <div className="text-wrap font-bold text-3xl mt-1 opacity-90 hoard-coin">
+            ON RADIX DLT
           </div>
         </div>
     )

@@ -14,7 +14,7 @@ export const StyledLogo = styled.img`
   cursor: pointer;
   @media (min-width: 768px) {
     width: 17%;
-    margin-left: -19%
+    margin-left: -1%
   }
 `;
 
@@ -37,12 +37,13 @@ export const StyledButtonGroup = styled.div`
   display: none;
   @media (min-width: 768px) {
     display: flex;
-    width: 40%;
+    width: 33%;
   }
   @media (min-width: 1065px) {
     display: flex;
-    width: 25%;
+    width: 29%;
   }
+
 `;
 
 export const StyledIntroLink = styled.div`
@@ -76,9 +77,10 @@ export const StyledRoundButton = styled.button`
 
 export const StyledIconGroup = styled.div`
   position: relative;  
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   display: none;
+  width: 28%;
   @media (min-width: 768px) {
     display: flex;
   }
@@ -91,10 +93,13 @@ export const StyledLink = styled.a`
 `;
 
 export const StyledScanInput = styled.input`
-  width: 55%;
+  width: 65%;
   color: black;
   margin-left: 10px;
   padding: 1px;
+  @media (max-width: 450px) {
+    width: 50%;
+  }
 `;
 
 export const StyledMenuIcon = styled.div`
@@ -131,8 +136,7 @@ export const StyledMyNavSide = styled.div`
 `;
 
 export const StyledMyNavSideDiv = styled.div`
-  position: relative;
-  top: 0px;
+  position: fixed;  
   left: 0px;
   height: 100vh;
   width: 100vw;
@@ -157,7 +161,7 @@ export const StyledMobileIconGroup = styled.div`
   align-items: center;
   display: flex;
   width: 60%;
-  margin-top: 8%;
+  margin-top: 5%;
   @media (min-width: 768px) {
     display: none;
     margin-top: 0%;
@@ -193,12 +197,67 @@ export const StyledTokenImg  = styled.img`
   cursor: pointer
 `;
 
+export const StyledWalletButton = styled.div`
+  border: 1px solid white;
+  background-color: var(--primary);
+  padding: 10px;
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--primary-text);
+  width: 76%;
+  height: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 5px 2px 0px rgb(250 250 250);
+  -webkit-box-shadow: 4px 5px 2px 0px rgb(250 250 250);
+  -moz-box-shadow: 4px 5px 2px 0px rgb(250 250 250);
+  :active {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+  }
+  @media (min-width:768px) and (max-width: 1068px) {
+    width: 65%;
+  }
+  @media (max-width: 768px) {
+    width: 50%;
+    margin-top: 5%;
+  }
+`;
+
+export const StyledWalletInput = styled.input`
+  width: 85%;
+  color: black;
+  margin-left: 10px;
+  padding: 1px;
+`;
+
 const Navbar = (props) => {
   const dispatch = useDispatch();
   const [status, setStatus] = useState("-200%");
+  const [keyword, setKeyword] = useState('');
+  const [walletAddress, setWalletAddress] = useState('');
 
   const handleScanInput = (e) => {
-    dispatch(saveKeyword({keyword: e.target.value}));
+    setKeyword(e.target.value);
+    dispatch(saveKeyword(
+      {
+        keyword: e.target.value,
+        walletAddress
+      }
+    ));
+  }
+
+  const handleWalletInput = (e) => { console.log("handleWalletInput", keyword, e.target.value)
+    setWalletAddress(e.target.value);
+    dispatch(saveKeyword(
+      {
+        keyword,
+        walletAddress: e.target.value
+      }
+    ));
   }
 
     return (
@@ -206,25 +265,23 @@ const Navbar = (props) => {
           <StyledHeader>
             <StyledButtonGroup>
               <s.Container
-                  fd={"row"}
-                  jc={"space-between"}
+                fd={"row"}
+                jc={"space-between"}
               >
-                  <StyledIntroLink 
-                    
-                  >
-                    <StyledRoundButton>
-                      <Link to="/introduction" target={"_blank"}>
-                        INSTRUCTIONS
-                      </Link>
-                    </StyledRoundButton>
-                  </StyledIntroLink>
-                  <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
-                    SCAN
-                    <StyledScanInput 
-                        type="number"
-                        onChange={(e) => handleScanInput(e)}
-                    />
+                <StyledIntroLink>
+                  <StyledRoundButton>
+                    <Link to="/introduction" target={"_blank"} className="white">
+                      INSTRUCTIONS
+                    </Link>
                   </StyledRoundButton>
+                </StyledIntroLink>
+                <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
+                  SCAN
+                  <StyledScanInput 
+                      type="number"
+                      onChange={(e) => handleScanInput(e)}
+                  />
+                </StyledRoundButton>
               </s.Container>
             </StyledButtonGroup>        
             <StyledLogo 
@@ -235,11 +292,17 @@ const Navbar = (props) => {
                   browserHistory.push('/');
               }} 
             />
+            
             <StyledIconGroup>
+              <StyledWalletButton>
+                WALLET
+                <StyledWalletInput
+                  onChange={(e) => handleWalletInput(e)}
+                />
+              </StyledWalletButton>
               <StyledLink 
                   target={"_blank"} 
                   href="https://t.me/HOARDTOKEN"
-                  style={{ marginRight: '8px' }}
               >
                   <i className="fab fa-telegram"></i>
               </StyledLink>
@@ -251,7 +314,7 @@ const Navbar = (props) => {
               </StyledLink>          
             </StyledIconGroup>
             <StyledMenuIcon>
-                <StyledMenuImg alt={"menu"} onClick={() => setStatus("0%")} src={"/images/icon_menu.png"}></StyledMenuImg>
+                <StyledMenuImg alt={"menu"} onClick={() => setStatus("-2%")} src={"/images/icon_menu.png"}></StyledMenuImg>
             </StyledMenuIcon>
           </StyledHeader>
           <StyledMyNavSide style={{ top: status }}>   
@@ -261,12 +324,11 @@ const Navbar = (props) => {
                   fd={"row"}
                   jc={"space-between"}
                 >
-                  <StyledIntroLink 
-                    target={"_blank"} 
-                    href=""
-                  >
+                  <StyledIntroLink>
                     <StyledRoundButton>
-                      INSTRUCTIONS
+                      <Link to="/introduction" target={"_blank"} className="white">
+                        INSTRUCTIONS
+                      </Link>
                     </StyledRoundButton>
                   </StyledIntroLink>
                   <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
@@ -278,6 +340,12 @@ const Navbar = (props) => {
                   </StyledRoundButton>
                 </s.Container>
               </StyledMobileButtonGroup>  
+              <StyledWalletButton>
+                WALLET
+                <StyledWalletInput
+                  onChange={(e) => handleWalletInput(e)}
+                />
+              </StyledWalletButton>
               <StyledMobileIconGroup>
                 <StyledLink 
                   target={"_blank"} 

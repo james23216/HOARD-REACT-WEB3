@@ -1,22 +1,16 @@
 const initialState = {
   keyword: '',
-  metaData: []
+  walletAddress: ''
 };
 
-const commonReducer = (state = initialState, action) => {
-  switch (action.type) {
+const commonReducer = (state = initialState, action) => { console.log("action.payload", action.payload);
+  switch (action.type) { 
     case "SAVE_KEYWORD":
       return {
         ...state,
-        keyword: action.payload.keyword
+        keyword: action.payload.keyword,
+        walletAddress: action.payload.walletAddress
       };
-      break;
-    case "LOAD_METADATA":
-      return {
-        ...state,
-        metaData: action.payload
-      };
-      break;
     default:
       return state;
   }
