@@ -6,6 +6,8 @@
   "dependencies": {
     "@material-tailwind/react": "^0.3.4",
     "animate.css": "^4.1.1",
+    "axios": "^0.24.0",
+    "inherits": "^2.0.4",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-animate-on-scroll": "^2.1.5",

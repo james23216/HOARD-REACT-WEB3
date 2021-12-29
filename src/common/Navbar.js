@@ -250,7 +250,7 @@ const Navbar = (props) => {
     ));
   }
 
-  const handleWalletInput = (e) => { console.log("handleWalletInput", keyword, e.target.value)
+  const handleWalletInput = (e) => { 
     setWalletAddress(e.target.value);
     dispatch(saveKeyword(
       {
