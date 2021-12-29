@@ -190,7 +190,7 @@ div {
 
 .z-50 {
   z-index: 99999999 !important;
-  display: flex;
+  display: flex !important;
   justify-content: center !important;
   align-items: center !important;
 }
