@@ -4,7 +4,13 @@ import * as s from "../styles/globalStyles";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Router, browserHistory } from 'react-router';
-import { saveKeyword } from '../redux/common/commonActions';
+import { 
+  saveKeyword, 
+  doSearch 
+} from '../redux/common/commonActions';
+import Modal from "@material-tailwind/react/Modal";
+import ModalHeader from "@material-tailwind/react/ModalHeader";
+import ModalBody from "@material-tailwind/react/ModalBody";
 
 export const StyledLogo = styled.img`
   position: relative;
@@ -234,11 +240,40 @@ export const StyledWalletInput = styled.input`
   padding: 1px;
 `;
 
+export const StyledSelectTokenGroup = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const StyledSelectTokenNumber = styled.p`
+  color: #fff;
+  font-size: 18px;
+  line-height: 1
+`;
+
+export const StyledSelectTokenDetailBlock = styled.div`
+  color: #fff;
+  font-size: 15px;
+  width: 100%;
+  display: flex;
+  margin-top: 15%;
+  flex-direction: column;
+`;
+
 const Navbar = (props) => {
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("-200%");
   const [keyword, setKeyword] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
+
+  const closeModal = () => { 
+    setShowModal(false);
+  }
 
   const handleScanInput = (e) => {
     setKeyword(e.target.value);
@@ -275,12 +310,11 @@ const Navbar = (props) => {
                     </Link>
                   </StyledRoundButton>
                 </StyledIntroLink>
-                <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
-                  SCAN
-                  <StyledScanInput 
-                      type="number"
-                      onChange={(e) => handleScanInput(e)}
-                  />
+                <StyledRoundButton
+                  onClick={() => {
+                    setShowModal(true);
+                  }}>
+                    ADVANCED SEARCH
                 </StyledRoundButton>
               </s.Container>
             </StyledButtonGroup>        
@@ -289,7 +323,6 @@ const Navbar = (props) => {
               src={"/images/HoardToken.png"}
               onClick={() => {
                   window.scrollTo(0,0);
-                  // browserHistory.push('/http://hoardtoken.com/');
                   window.open(
                     'http://hoardtoken.com/',
                     '_blank'
@@ -298,12 +331,6 @@ const Navbar = (props) => {
             />
             
             <StyledIconGroup>
-              <StyledWalletButton>
-                WALLET
-                <StyledWalletInput
-                  onChange={(e) => handleWalletInput(e)}
-                />
-              </StyledWalletButton>
               <StyledLink 
                   target={"_blank"} 
                   href="https://t.me/HOARDTOKEN"
@@ -363,11 +390,49 @@ const Navbar = (props) => {
                   href="https://twitter.com/HOARDTOKEN"
                 >
                   <i className="fab fa-twitter"></i>
-                </StyledLink>          
+                </StyledLink> 
+                <StyledWalletButton
+                  onClick={() => {
+                    dispatch(doSearch(true));
+                    closeModal();
+                }}>
+                  SEARCH
+                </StyledWalletButton>           
               </StyledMobileIconGroup>
               <StyledMobileClose onClick={() => setStatus("-200%")}>&times;</StyledMobileClose>     
             </StyledMyNavSideDiv>    
           </StyledMyNavSide> 
+          <Modal size="regular" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>     
+            <ModalBody>      
+              {
+                <StyledSelectTokenGroup>
+                  <StyledSelectTokenNumber>ADVANCED SEARCH</StyledSelectTokenNumber>
+                  <StyledSelectTokenDetailBlock>
+                    <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
+                      SCAN
+                      <StyledScanInput 
+                        type="number"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledRoundButton>
+                    <StyledWalletButton>
+                      WALLET
+                      <StyledWalletInput
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <StyledWalletButton
+                      onClick={() => {
+                        dispatch(doSearch(true));
+                        closeModal();
+                    }}>
+                      SEARCH
+                    </StyledWalletButton>  
+                  </StyledSelectTokenDetailBlock>
+                </StyledSelectTokenGroup>
+              }
+            </ModalBody>
+          </Modal>
         </>   
     )
 }

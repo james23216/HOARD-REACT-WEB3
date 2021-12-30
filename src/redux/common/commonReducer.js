@@ -2,7 +2,8 @@ const initialState = {
   keyword: '',
   walletAddress: '',
   metaData: [],
-  isLoadingMetaData: false
+  isLoadingMetaData: false,
+  isSearching: false
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -25,6 +26,12 @@ const commonReducer = (state = initialState, action) => {
         ...state,
         metaData: action.payload,
         isLoadingMetaData: false
+      };
+      break;
+    case "DO_SEARCH":
+      return {
+        ...state,
+        isSearching: action.payload
       };
       break;
     default:

@@ -53,3 +53,10 @@ export const loadMetaData = () => {
     }
   }
 };
+
+export const doSearch = (payload) => {
+  return {
+    type: "DO_SEARCH",
+    payload: payload,
+  };
+};

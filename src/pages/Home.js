@@ -7,7 +7,10 @@ import _ from 'lodash';
 import chunk from 'lodash/chunk';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useDispatch, useSelector } from "react-redux";
-import { loadMetaData } from '../redux/common/commonActions';
+import { 
+  loadMetaData,
+  doSearch
+} from '../redux/common/commonActions';
 
 
 export const StyledSelectTokenGroup = styled.div`
@@ -111,8 +114,10 @@ function Home() {
   }, []);
 
   useEffect(() => { 
-    searchProduct(common.keyword, common.walletAddress);
-  }, [common.keyword, common.walletAddress]);
+    if (common.isSearching) {
+      dispatch(loadMetaData());
+    }
+  }, [common.isSearching]);
 
   useEffect(() => {
     fetchMoreData();
@@ -122,6 +127,11 @@ function Home() {
         let found = common.metaData.find(o => o.incrementNumberCoin === chosenTokenId);
         setSelectToken(found);
       }
+    }
+
+    if (common.isSearching) {
+      searchProduct(common.keyword, common.walletAddress);
+      dispatch(doSearch(false));
     }
   }, [common.metaData]);
 
