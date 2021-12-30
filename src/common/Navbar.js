@@ -289,7 +289,11 @@ const Navbar = (props) => {
               src={"/images/HoardToken.png"}
               onClick={() => {
                   window.scrollTo(0,0);
-                  browserHistory.push('/');
+                  // browserHistory.push('/http://hoardtoken.com/');
+                  window.open(
+                    'http://hoardtoken.com/',
+                    '_blank'
+                  )
               }} 
             />
             

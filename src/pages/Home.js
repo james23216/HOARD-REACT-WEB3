@@ -36,7 +36,9 @@ export const StyledSelectTokenStatus = styled.p`
   font-size: 28px;
   font-weight: bold;
   line-height: 1;
-  margin-top: 3%
+  margin-top: 3%;
+  text-align: center;
+  font-size: 22px
 `;
 
 export const StyledSelectTokenDetailBlock = styled.div`
@@ -92,12 +94,13 @@ function Home() {
   const filterProduct = (keyword, walletAddress) => { 
     let tProducts = [];
     let metaData = Object.assign([], common.metaData);
+    
     if (walletAddress === '' || walletAddress === undefined) {
       tProducts = _.filter(metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword));
     } else if (keyword === '' || keyword === undefined) {
-      tProducts = _.filter(metaData, (o) => parseInt(o.purchaserWallet) === parseInt(walletAddress));
+      tProducts = _.filter(metaData, (o) => o.purchaserWallet === walletAddress);
     } else { 
-      tProducts = _.filter(metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword) && parseInt(o.purchaserWallet) === parseInt(walletAddress));
+      tProducts = _.filter(metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword) && o.purchaserWallet === walletAddress);
     }
      
     setProducts([...tProducts]);
@@ -107,7 +110,7 @@ function Home() {
     dispatch(loadMetaData());
   }, []);
 
-  useEffect(() => {  
+  useEffect(() => { 
     searchProduct(common.keyword, common.walletAddress);
   }, [common.keyword, common.walletAddress]);
 
@@ -138,6 +141,7 @@ function Home() {
       setProducts([...metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
     } else { 
       if (metaData && metaData.length > 0) {
+        console.log('filtering');
         filterProduct(keyword, walletAddress);
         window.scrollTo(0,0);
       }
@@ -177,7 +181,14 @@ function Home() {
             {
               common.isLoadingMetaData
               ? <StyledSelectTokenGroup>
-                  <StyledSelectTokenStatus>Loading...</StyledSelectTokenStatus>
+                    <div className="sk-chase">
+                      <div className="sk-chase-dot"></div>
+                      <div className="sk-chase-dot"></div>
+                      <div className="sk-chase-dot"></div>
+                      <div className="sk-chase-dot"></div>
+                      <div className="sk-chase-dot"></div>
+                      <div className="sk-chase-dot"></div>
+                    </div>
                 </StyledSelectTokenGroup>
               : selectToken
                 ? <StyledSelectTokenGroup>
@@ -195,8 +206,8 @@ function Home() {
                       <StyledSelectTokenDetailRight>
                       <StyledSelectTokenDetailFound>{selectToken.firstname} / {selectToken.surname}</StyledSelectTokenDetailFound> 
                       <StyledSelectTokenDetailFound>{selectToken.whereTheyFoundIt}</StyledSelectTokenDetailFound> 
-                      <StyledSelectTokenDetailFound>{selectToken.whenTheyFoundItMonth}&nbsp;{selectToken.whenTheyFoundItDay}&nbsp;{selectToken.whenTheyFoundItYear}</StyledSelectTokenDetailFound>                
-                      <StyledSelectTokenDetailFound>{selectToken.ad}&nbsp;{selectToken.coinageOfCoin}</StyledSelectTokenDetailFound>                
+                      <StyledSelectTokenDetailFound>{selectToken.whenTheyFoundItMonth}&nbsp;{selectToken.whenTheyFoundItDay},&nbsp;{selectToken.whenTheyFoundItYear}</StyledSelectTokenDetailFound>                
+                      <StyledSelectTokenDetailFound>{selectToken.ad}&nbsp;{selectToken.coinAgeOfCoin}</StyledSelectTokenDetailFound>                
                       <StyledSelectTokenDetailFound>{selectToken.metal}</StyledSelectTokenDetailFound>      
                       </StyledSelectTokenDetailRight>                              
                     </StyledSelectTokenDetailBlock>

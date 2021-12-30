@@ -21,7 +21,7 @@ export const loadMetaData = () => {
         if (idx > 1) {
           let item = {};
           keys.forEach((key, kIdx) => {
-            if (camelCase(key) === 'wordPressPathAndName') {
+            /* if (camelCase(key) === 'wordPressPathAndName') {
               let wordPressPathAndName = '';
   
               if (o[kIdx + 1] && o[kIdx + 1].includes("http://hoardtoken.com")) {
@@ -31,7 +31,8 @@ export const loadMetaData = () => {
               item[camelCase(key)] =  kIdx < o.length ? wordPressPathAndName : '';
             } else {
               item[camelCase(key)] =  kIdx < o.length ? o[kIdx + 1] : '';
-            }
+            } */
+            item[camelCase(key)] =  kIdx < o.length ? o[kIdx + 1] : '';
           });
           metaData.push(item);
         }
