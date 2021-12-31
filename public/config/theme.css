@@ -543,3 +543,11 @@ body::-webkit-scrollbar-thumb {
   width: 96%;
   margin-bottom: 2%;
 }
+
+.text-gray-900 {
+  color: white !important;
+}
+
+.pointer-events-auto h5 {
+  display: none !important;
+}

@@ -255,6 +255,9 @@ function Home() {
         </div>
         </InfiniteScroll>        
         <Modal size="regular" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>     
+        <ModalHeader toggler={() => setShowModal(false)}>
+                    Modal Title
+                </ModalHeader>
           <ModalBody>      
             {
               common.isLoadingMetaData
