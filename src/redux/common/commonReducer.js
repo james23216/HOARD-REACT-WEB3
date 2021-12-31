@@ -1,6 +1,16 @@
 const initialState = {
-  keyword: '',
-  walletAddress: '',
+  searchOptions: {
+    coinType: '',
+    wallet: '',
+    name: '',
+    country: '',
+    tokenIdFrom: '',
+    tokenIdTo: '',
+    yearFrom: '',
+    yearTo: '',
+    ageFrom: '',
+    ageTo: ''
+  },
   metaData: [],
   isLoadingMetaData: false,
   isSearching: false
@@ -9,10 +19,29 @@ const initialState = {
 const commonReducer = (state = initialState, action) => {
   switch (action.type) { 
     case "SAVE_KEYWORD":
+      let searchOptions = Object.assign({}, state.searchOptions);
+      searchOptions[action.payload.key] = action.payload.value;
+      
       return {
         ...state,
-        keyword: action.payload.keyword,
-        walletAddress: action.payload.walletAddress
+        searchOptions
+      };
+      break;
+    case "RESET_KEYWORD":
+      return {
+        ...state,
+        searchOptions: {
+          coinType: '',
+          wallet: '',
+          name: '',
+          country: '',
+          tokenIdFrom: '',
+          tokenIdTo: '',
+          yearFrom: '',
+          yearTo: '',
+          ageFrom: '',
+          ageTo: ''
+        }
       };
       break;
     case "START_LOAD_METADATA":

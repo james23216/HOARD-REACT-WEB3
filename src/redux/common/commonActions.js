@@ -13,6 +13,12 @@ export const saveKeyword = (payload) => {
   };
 };
 
+export const resetSearchOptions = () => {
+  return {
+    type: "RESET_KEYWORD"
+  };
+}
+
 export const loadMetaData = () => {
   return async dispatch => {
     dispatch({ type: 'START_LOAD_METADATA' });
@@ -32,7 +38,6 @@ export const loadMetaData = () => {
       });
 
       metaData = shuffle(metaData);
-
       dispatch({ type: 'LOAD_METADATA', payload: metaData });
       return metaData;
     }

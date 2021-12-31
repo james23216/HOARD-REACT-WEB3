@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Router, browserHistory } from 'react-router';
 import { 
   saveKeyword, 
-  doSearch 
+  doSearch,
+  resetSearchOptions
 } from '../redux/common/commonActions';
 import Modal from "@material-tailwind/react/Modal";
 import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
+import country from "../utils/country.json"
 
 export const StyledLogo = styled.img`
   position: relative;
@@ -103,6 +105,17 @@ export const StyledScanInput = styled.input`
   color: black;
   margin-left: 10px;
   padding: 1px;
+  @media (max-width: 450px) {
+    width: 50%;
+  }
+`;
+
+export const StyledScanSelect = styled.select`
+  width: 65%;
+  color: black;
+  margin-left: 10px;
+  padding: 1px;
+  cursor: pointer;
   @media (max-width: 450px) {
     width: 50%;
   }
@@ -276,32 +289,19 @@ const Navbar = (props) => {
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [status, setStatus] = useState("-200%");
-  const [keyword, setKeyword] = useState('');
-  const [walletAddress, setWalletAddress] = useState('');
   const common = useSelector((state) => state.common);
 
   const closeModal = () => { 
     setShowModal(false);
   }
 
-  const handleScanInput = (e) => {
-    setKeyword(e.target.value);
-    dispatch(saveKeyword(
-      {
-        keyword: e.target.value,
-        walletAddress
-      }
-    ));
-  }
-
-  const handleWalletInput = (e) => { 
-    setWalletAddress(e.target.value);
-    dispatch(saveKeyword(
-      {
-        keyword,
-        walletAddress: e.target.value
-      }
-    ));
+  const handleSearch = (e, key) => { 
+    dispatch(
+      saveKeyword({
+        key,
+        value: e.target.value
+      })
+    );
   }
   
     return (
@@ -319,16 +319,19 @@ const Navbar = (props) => {
                     </Link>
                   </StyledRoundButton>
                 </StyledIntroLink>
-                { window.location.pathname == "/introduction" ? 
-                    null
+                { 
+                  window.location.pathname == "/introduction" 
+                  ? null
                   : <StyledAdvancedGroup>
                     <StyledRoundButton
                       onClick={() => {
+                        dispatch(resetSearchOptions());
                         setShowModal(true);
                       }}>
                         ADVANCED SEARCH
                     </StyledRoundButton>
-                  </StyledAdvancedGroup>   }              
+                  </StyledAdvancedGroup>   
+                }              
               </s.Container>
             </StyledButtonGroup>        
             <StyledLogo 
@@ -375,32 +378,51 @@ const Navbar = (props) => {
                   </StyledRoundButton>   
                   <StyledSelectTokenDetailBlock>
                     <StyledWalletButton className="advanced-input mrb">
-                      <StyledScanInput 
+                      <StyledScanSelect 
                         placeholder="COIN TYPE"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
-                      />
+                        value={common.searchOptions.coinType}
+                        // defaultValue={''}
+                        onChange={(e) => handleSearch(e, 'coinType')}
+                      >
+                        <option key={0} value={''}>{''}</option>
+                        <option key={1} value={'Gold'}>Gold</option>
+                        <option key={2} value={'Silver'}>Silver</option>
+                        <option key={3} value={'Bronze'}>Bronze</option>                        
+                      </StyledScanSelect>
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
                       <StyledWalletInput
                         placeholder="WALLET"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.wallet}
+                        onChange={(e) => handleSearch(e, 'wallet')}
                       />
                     </StyledWalletButton> 
                     <StyledWalletButton className="advanced-input mrb">
                       <StyledScanInput 
                         placeholder="NAME"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.name}
+                        onChange={(e) => handleSearch(e, 'name')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
-                      <StyledWalletInput
+                      <StyledScanSelect
                         placeholder="COUNTRY"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
-                      />
+                        value={common.searchOptions.country}
+                        onChange={(e) => handleSearch(e, 'country')}
+                      >
+                        <option key={-1} value={''}></option>
+                        {
+                          country && country.map((o, idx) => {
+                            return <option key={idx} value={o.country}>
+                                      {o.country}
+                                   </option>
+                          })
+                        }
+                      </StyledScanSelect>
                     </StyledWalletButton> 
                     <p className="white detail-title">TOKEN ID</p>
                     <StyledWalletButton className="advanced-input mrb">
@@ -408,7 +430,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.tokenIdFrom}
+                        onChange={(e) => handleSearch(e, 'tokenIdFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -416,7 +439,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="TO"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.tokenIdTo}
+                        onChange={(e) => handleSearch(e, 'tokenIdTo')}
                       />
                     </StyledWalletButton> 
                     <p className="white detail-title">YEAR</p>
@@ -425,7 +449,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.yearFrom}
+                        onChange={(e) => handleSearch(e, 'yearFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -433,7 +458,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="TO"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.yearTo}
+                        onChange={(e) => handleSearch(e, 'yearTo')}
                       />
                     </StyledWalletButton> 
                     <p className="white detail-title">AGE</p>
@@ -442,7 +468,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.ageFrom}
+                        onChange={(e) => handleSearch(e, 'ageFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -450,9 +477,10 @@ const Navbar = (props) => {
                         className="advanced-wallet"
                         type="number"
                         placeholder="TO"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.ageTo}
+                        onChange={(e) => handleSearch(e, 'ageTo')}
                       />
-                    </StyledWalletButton> 
+                    </StyledWalletButton>  
                     <StyledWalletButton
                       style={{ marginTop: '3%' }}
                       onClick={() => {
@@ -489,32 +517,51 @@ const Navbar = (props) => {
                   <StyledSelectTokenNumber>ADVANCED SEARCH</StyledSelectTokenNumber>
                   <StyledSelectTokenDetailBlock>
                     <StyledWalletButton className="advanced-input mrb">
-                      <StyledScanInput 
+                      <StyledScanSelect 
                         placeholder="COIN TYPE"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
-                      />
+                        value={common.searchOptions.coinType}
+                        // defaultValue={''}
+                        onChange={(e) => handleSearch(e, 'coinType')}
+                      >
+                        <option key={0} value={''}>{''}</option>
+                        <option key={1} value={'Gold'}>Gold</option>
+                        <option key={2} value={'Silver'}>Silver</option>
+                        <option key={3} value={'Bronze'}>Bronze</option>                        
+                      </StyledScanSelect>
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
                       <StyledWalletInput
                         placeholder="WALLET"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.wallet}
+                        onChange={(e) => handleSearch(e, 'wallet')}
                       />
                     </StyledWalletButton> 
                     <StyledWalletButton className="advanced-input mrb">
                       <StyledScanInput 
                         placeholder="NAME"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.name}
+                        onChange={(e) => handleSearch(e, 'name')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
-                      <StyledWalletInput
+                      <StyledScanSelect
                         placeholder="COUNTRY"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
-                      />
+                        value={common.searchOptions.country}
+                        onChange={(e) => handleSearch(e, 'country')}
+                      >
+                        <option key={-1} value={''}></option>
+                        {
+                          country && country.map((o, idx) => {
+                            return <option key={idx} value={o.country}>
+                                      {o.country}
+                                   </option>
+                          })
+                        }
+                      </StyledScanSelect>
                     </StyledWalletButton> 
                     <p className="white detail-title">TOKEN ID</p>
                     <StyledWalletButton className="advanced-input mrb">
@@ -522,7 +569,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.tokenIdFrom}
+                        onChange={(e) => handleSearch(e, 'tokenIdFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -530,7 +578,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="TO"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.tokenIdTo}
+                        onChange={(e) => handleSearch(e, 'tokenIdTo')}
                       />
                     </StyledWalletButton> 
                     <p className="white detail-title">YEAR</p>
@@ -539,7 +588,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.yearFrom}
+                        onChange={(e) => handleSearch(e, 'yearFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -547,7 +597,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="TO"
                         className="advanced-wallet"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.yearTo}
+                        onChange={(e) => handleSearch(e, 'yearTo')}
                       />
                     </StyledWalletButton> 
                     <p className="white detail-title">AGE</p>
@@ -556,7 +607,8 @@ const Navbar = (props) => {
                         type="number"
                         placeholder="FROM"
                         className="advanced-wallet"
-                        onChange={(e) => handleScanInput(e)}
+                        value={common.searchOptions.ageFrom}
+                        onChange={(e) => handleSearch(e, 'ageFrom')}
                       />
                     </StyledWalletButton>
                     <StyledWalletButton className="advanced-input mb">
@@ -564,9 +616,10 @@ const Navbar = (props) => {
                         className="advanced-wallet"
                         type="number"
                         placeholder="TO"
-                        onChange={(e) => handleWalletInput(e)}
+                        value={common.searchOptions.ageTo}
+                        onChange={(e) => handleSearch(e, 'ageTo')}
                       />
-                    </StyledWalletButton> 
+                    </StyledWalletButton>  
                     <StyledWalletButton
                       style={{ marginTop: '3%' }}
                       onClick={() => {

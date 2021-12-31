@@ -94,19 +94,66 @@ function Home() {
     setSelectToken({});
   }
 
-  const filterProduct = (keyword, walletAddress) => { 
+  const filterProduct = (type) => { 
     let tProducts = [];
     let metaData = Object.assign([], common.metaData);
     
-    if (walletAddress === '' || walletAddress === undefined) {
-      tProducts = _.filter(metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword));
-    } else if (keyword === '' || keyword === undefined) {
-      tProducts = _.filter(metaData, (o) => o.purchaserWallet === walletAddress);
-    } else { 
-      tProducts = _.filter(metaData, (o) => parseInt(o.incrementNumberCoin) === parseInt(keyword) && o.purchaserWallet === walletAddress);
+    console.log('metadata2: ', metaData);
+
+    tProducts = _.filter(metaData, (o) => {
+      let isMatched = true;
+      if (common.searchOptions.coinType !== '') {
+        isMatched = isMatched && common.searchOptions.coinType === o.metal;
+      }
+
+      if (common.searchOptions.wallet !== '') {
+        isMatched = isMatched && common.searchOptions.wallet === o.purchaserWallet;
+      }
+
+      if (common.searchOptions.name !== '') {
+        isMatched = isMatched && common.searchOptions.name === o.firstname + ' ' + o.surname;
+      }
+
+      if (common.searchOptions.country !== '') {
+        isMatched = isMatched && common.searchOptions.country === o.whereTheyFoundIt;
+      }
+
+      if (common.searchOptions.tokenIdFrom !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.tokenIdFrom) <= parseInt(o.incrementNumberCoin);
+      }
+
+      if (common.searchOptions.tokenIdTo !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.tokenIdTo) >= parseInt(o.incrementNumberCoin);
+      }
+
+      if (common.searchOptions.yearFrom !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.yearFrom) <= parseInt(o.whenTheyFoundItYear);
+      }
+
+      if (common.searchOptions.yearTo !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.yearTo) >= parseInt(o.whenTheyFoundItYear);
+      }
+
+      if (common.searchOptions.ageFrom !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.ageFrom) <= parseInt(o.coinAgeOfCoin);
+      }
+
+      if (common.searchOptions.ageTo !== '') {
+        isMatched = isMatched && parseInt(common.searchOptions.ageTo) >= parseInt(o.coinAgeOfCoin);
+      }
+
+      return isMatched;
+    });
+
+    console.log('type, data', type, tProducts.length);
+
+    if (type === 'fetchMoreData') {
+      setProducts([...products, ...tProducts.slice((pageIndex - 1) * count, pageIndex * count)]);
     }
-     
-    setProducts([...tProducts]);
+
+    if (type === 'searchProduct') {
+      setProducts([...tProducts]);
+    }    
   }
 
   useEffect(() => {
@@ -130,38 +177,26 @@ function Home() {
     }
 
     if (common.isSearching) {
-      searchProduct(common.keyword, common.walletAddress);
+      searchProduct();
       dispatch(doSearch(false));
     }
   }, [common.metaData]);
 
   const fetchMoreData = () => {
-    let metaData = Object.assign([], common.metaData);
-    if (common.keyword === '' && common.walletAddress === '') {
-      setProducts([...products, ...metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
-    } else {
-      filterProduct(common.keyword, common.walletAddress);
-    }
+    filterProduct('fetchMoreData');
     setPageIndex(pageIndex + 1);
   }
 
-  const searchProduct = (keyword, walletAddress) => {
-    let metaData = Object.assign([], common.metaData);
-    if (keyword === '' && walletAddress === '') { 
-      setProducts([...metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
-    } else { 
-      if (metaData && metaData.length > 0) {
-        filterProduct(keyword, walletAddress);
-        window.scrollTo(0,0);
-      }
-    }
+  const searchProduct = () => {
+    filterProduct('searchProduct');
+    window.scrollTo(0,0);
   }
 
   const addDefaultSrc = (ev) => {
     ev.target.src = 'https://via.placeholder.com/400';
   }
 
-  const handleMetalImg = (metal, key) => { console.log("metal++++++", metal)
+  const handleMetalImg = (metal, key) => {
     if (metal) {
       if (metal.includes('Gold')) {
          return <img
@@ -193,6 +228,7 @@ function Home() {
           dataLength={products.length}
           next={fetchMoreData}
           hasMore={true}
+          style={{ overflow: 'none' }}
         >
         <div className="photos">
           {
@@ -213,7 +249,6 @@ function Home() {
                     }} 
                 />
                 {handleMetalImg(image.metal, index)}
-                
               </div>
             ))
           }
