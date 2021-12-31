@@ -14,6 +14,9 @@ import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
 import country from "../utils/country.json"
 
+const truncate = (input, len) =>
+  input.length > len ? `${input.substring(0, len)}...` : input;
+
 export const StyledLogo = styled.img`
   position: relative;
   width: 25%;
@@ -180,7 +183,7 @@ export const StyledMobileIconGroup = styled.div`
   justify-content: space-around;
   align-items: center;
   display: flex;
-  width: 60%;
+  width: 80%;
   margin-top: 8%;
   @media (min-width: 768px) {
     display: none;
@@ -385,7 +388,7 @@ const Navbar = (props) => {
                         // defaultValue={''}
                         onChange={(e) => handleSearch(e, 'coinType')}
                       >
-                        <option key={0} value={''}>{''}</option>
+                        <option key={0} value={''}>{'ANY-COIN TYPE'}</option>
                         <option key={1} value={'Gold'}>Gold</option>
                         <option key={2} value={'Silver'}>Silver</option>
                         <option key={3} value={'Bronze'}>Bronze</option>                        
@@ -414,11 +417,11 @@ const Navbar = (props) => {
                         value={common.searchOptions.country}
                         onChange={(e) => handleSearch(e, 'country')}
                       >
-                        <option key={-1} value={''}></option>
+                        <option key={-1} value={''} style={{ maxWidth: '20px' }}>{'ANY-COUNTRY'}</option>
                         {
                           country && country.map((o, idx) => {
-                            return <option key={idx} value={o.country}>
-                                      {o.country}
+                            return <option key={idx} value={o.country} style={{ maxWidth: '20px' }}>
+                                      {truncate(o.country, 20)}
                                    </option>
                           })
                         }
@@ -485,7 +488,7 @@ const Navbar = (props) => {
                       style={{ marginTop: '3%' }}
                       onClick={() => {
                         dispatch(doSearch(true));
-                        closeModal();
+                        setStatus('-200%');
                     }}>
                       SEARCH
                     </StyledWalletButton>  
@@ -500,14 +503,14 @@ const Navbar = (props) => {
                 >
                   <i className="fab fa-telegram"></i>
                 </StyledLink>
+                <StyledMobileClose onClick={() => setStatus("-200%")}>&times;</StyledMobileClose>
                 <StyledLink 
                   target={"_blank"} 
                   href="https://twitter.com/HOARDTOKEN"
                 >
                   <i className="fab fa-twitter"></i>
                 </StyledLink>                        
-              </StyledMobileIconGroup>
-              <StyledMobileClose onClick={() => setStatus("-200%")}>&times;</StyledMobileClose>     
+              </StyledMobileIconGroup>                   
             </StyledMyNavSideDiv>    
           </StyledMyNavSide> 
           <Modal size="lg" className="advanced-modal" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>     
@@ -524,7 +527,7 @@ const Navbar = (props) => {
                         // defaultValue={''}
                         onChange={(e) => handleSearch(e, 'coinType')}
                       >
-                        <option key={0} value={''}>{''}</option>
+                        <option key={0} value={''}>{'ANY-COIN TYPE'}</option>
                         <option key={1} value={'Gold'}>Gold</option>
                         <option key={2} value={'Silver'}>Silver</option>
                         <option key={3} value={'Bronze'}>Bronze</option>                        
@@ -553,11 +556,11 @@ const Navbar = (props) => {
                         value={common.searchOptions.country}
                         onChange={(e) => handleSearch(e, 'country')}
                       >
-                        <option key={-1} value={''}></option>
+                        <option key={-1} value={''}>{'ANY-COUNTRY'}</option>
                         {
                           country && country.map((o, idx) => {
                             return <option key={idx} value={o.country}>
-                                      {o.country}
+                                      {truncate(o.country, 20)}
                                    </option>
                           })
                         }
