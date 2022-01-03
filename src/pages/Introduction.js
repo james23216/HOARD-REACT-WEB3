@@ -15,7 +15,7 @@ function Introduction() {
           </div>
           <div className="video">
             <iframe
-              src="https://youtu.be/-qi8JiID0eU">
+              src="https://www.youtube.com/embed/-qi8JiID0eU">
             </iframe>
           </div>          
           <div className="text-wrap font-bold text-3xl mt-8">

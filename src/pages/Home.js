@@ -151,7 +151,6 @@ function Home() {
       setProducts([...metaData.slice((pageIndex - 1) * count, pageIndex * count)]);
     } else { 
       if (metaData && metaData.length > 0) {
-        console.log('filtering');
         filterProduct(keyword, walletAddress);
         window.scrollTo(0,0);
       }
@@ -162,6 +161,32 @@ function Home() {
     ev.target.src = 'https://via.placeholder.com/400';
   }
 
+  const handleMetalImg = (metal, key) => { console.log("metal++++++", metal)
+    if (metal) {
+      if (metal.includes('Gold')) {
+         return <img
+                  className="metal"
+                  src="images/gold.png"
+                  key={key+1}
+                />
+      } else if (metal.includes('Silver')) {
+        return  <img
+                  className="metal"
+                  src="images/silver.png"
+                  key={key+1}
+                />
+      } else {
+        return  <img
+                  className="metal"
+                  src="images/bronze.png"
+                  key={key+1}
+                />
+      }
+    } else {
+      return;
+    }
+  }
+ 
   return (
       <>
         <InfiniteScroll
@@ -172,16 +197,24 @@ function Home() {
         <div className="photos">
           {
             products.map((image, index) => (
-              <img
-                onError={addDefaultSrc}
-                alt={`Hoard Token ${ index }`} 
-                className="img"
-                src={image.wordPressPathAndName}
+              <div 
+                className={`img ${image.purchaserWallet ? 'walletOpacity' : ''}`} 
                 key={index}
-                style={{ cursor: 'pointer !important' }}
-                onClick={() => {
-                    loadTokenData(image.incrementNumberCoin);
-                }} />
+              >
+                <img
+                    onError={addDefaultSrc}
+                    alt={`Hoard Token ${ index }`} 
+                    style={{ width: '100%' }}
+                    src={image.wordPressPathAndName}
+                    key={index}
+                    style={{ cursor: 'pointer !important' }}
+                    onClick={() => {
+                        loadTokenData(image.incrementNumberCoin);
+                    }} 
+                />
+                {handleMetalImg(image.metal, index)}
+                
+              </div>
             ))
           }
         </div>
@@ -204,7 +237,8 @@ function Home() {
                 ? <StyledSelectTokenGroup>
                     <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} />
                     <StyledSelectTokenNumber>HOARD {selectToken.incrementNumberCoin}</StyledSelectTokenNumber>
-                    <StyledSelectTokenStatus>AVAILABLE</StyledSelectTokenStatus>
+                    <StyledSelectTokenStatus>{ selectToken.purchaserWallet ? 'RESERVED' : 'AVAILABLE' }</StyledSelectTokenStatus>
+                    { selectToken.purchaserWallet ? <p className="text-wrap wallet-addr reserved"> {selectToken.purchaserWallet} </p> : null  }
                     <StyledSelectTokenDetailBlock>
                       <StyledSelectTokenDetailLeft>
                       <StyledSelectTokenDetailFound>Found By:</StyledSelectTokenDetailFound> 
@@ -228,6 +262,21 @@ function Home() {
             }
           </ModalBody>
         </Modal>
+        {
+          common.isSearching
+          ? 
+          <div className="loading-section">
+                <div className="sk-chase">
+                  <div className="sk-chase-dot"></div>
+                  <div className="sk-chase-dot"></div>
+                  <div className="sk-chase-dot"></div>
+                  <div className="sk-chase-dot"></div>
+                  <div className="sk-chase-dot"></div>
+                  <div className="sk-chase-dot"></div>
+                </div>
+            </div>
+          : null
+        }
       </>
   )
 }

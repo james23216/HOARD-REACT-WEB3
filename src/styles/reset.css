@@ -194,3 +194,15 @@ div {
   justify-content: center !important;
   align-items: center !important;
 }
+
+
+
+.max-w-6xl {
+  width: 35% !important;
+}
+
+@media (max-width: 768px) {
+  .max-w-6xl {
+    width: 90% !important;
+  }  
+}

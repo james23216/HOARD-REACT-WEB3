@@ -20,7 +20,7 @@ export const StyledLogo = styled.img`
   cursor: pointer;
   @media (min-width: 768px) {
     width: 17%;
-    margin-left: -1%
+    margin-left: -23%
   }
 `;
 
@@ -86,7 +86,7 @@ export const StyledIconGroup = styled.div`
   justify-content: space-between;
   align-items: center;
   display: none;
-  width: 28%;
+  width: 5%;
   @media (min-width: 768px) {
     display: flex;
   }
@@ -137,7 +137,7 @@ export const StyledMyNavSide = styled.div`
   overflow-x: hidden;
   transition: 0.3s;
   @media (min-width: 768px) {
-    top: -200%;
+    top: -0.15%;
   }
 `;
 
@@ -156,6 +156,7 @@ export const StyledMobileButtonGroup = styled.div`
   position: relative;  
   width: 80%;
   display: flex;
+  margin-top: 5%;
   @media (min-width: 768px) {
     display: none
   }
@@ -167,7 +168,7 @@ export const StyledMobileIconGroup = styled.div`
   align-items: center;
   display: flex;
   width: 60%;
-  margin-top: 5%;
+  margin-top: 8%;
   @media (min-width: 768px) {
     display: none;
     margin-top: 0%;
@@ -229,7 +230,6 @@ export const StyledWalletButton = styled.div`
   }
   @media (max-width: 768px) {
     width: 50%;
-    margin-top: 5%;
   }
 `;
 
@@ -260,8 +260,16 @@ export const StyledSelectTokenDetailBlock = styled.div`
   font-size: 15px;
   width: 100%;
   display: flex;
-  margin-top: 15%;
-  flex-direction: column;
+  margin-top: 5%;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center
+`;
+
+export const StyledAdvancedGroup = styled.div`
+  width: 48%;
+  cursor: pointer
 `;
 
 const Navbar = (props) => {
@@ -270,6 +278,7 @@ const Navbar = (props) => {
   const [status, setStatus] = useState("-200%");
   const [keyword, setKeyword] = useState('');
   const [walletAddress, setWalletAddress] = useState('');
+  const common = useSelector((state) => state.common);
 
   const closeModal = () => { 
     setShowModal(false);
@@ -294,7 +303,7 @@ const Navbar = (props) => {
       }
     ));
   }
-
+  
     return (
         <>
           <StyledHeader>
@@ -310,12 +319,16 @@ const Navbar = (props) => {
                     </Link>
                   </StyledRoundButton>
                 </StyledIntroLink>
-                <StyledRoundButton
-                  onClick={() => {
-                    setShowModal(true);
-                  }}>
-                    ADVANCED SEARCH
-                </StyledRoundButton>
+                { window.location.pathname == "/introduction" ? 
+                    null
+                  : <StyledAdvancedGroup>
+                    <StyledRoundButton
+                      onClick={() => {
+                        setShowModal(true);
+                      }}>
+                        ADVANCED SEARCH
+                    </StyledRoundButton>
+                  </StyledAdvancedGroup>   }              
               </s.Container>
             </StyledButtonGroup>        
             <StyledLogo 
@@ -345,38 +358,112 @@ const Navbar = (props) => {
               </StyledLink>          
             </StyledIconGroup>
             <StyledMenuIcon>
-                <StyledMenuImg alt={"menu"} onClick={() => setStatus("-2%")} src={"/images/icon_menu.png"}></StyledMenuImg>
+                <StyledMenuImg alt={"menu"} onClick={() => setStatus("-0.15%")} src={"/images/icon_menu.png"}></StyledMenuImg>
             </StyledMenuIcon>
           </StyledHeader>
           <StyledMyNavSide style={{ top: status }}>   
-            <StyledMyNavSideDiv>       
+            <StyledMyNavSideDiv> 
               <StyledMobileButtonGroup>
                 <s.Container
-                  fd={"row"}
-                  jc={"space-between"}
-                >
-                  <StyledIntroLink>
-                    <StyledRoundButton>
-                      <Link to="/introduction" target={"_blank"} className="white">
-                        INSTRUCTIONS
-                      </Link>
-                    </StyledRoundButton>
-                  </StyledIntroLink>
-                  <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
-                    SCAN
-                    <StyledScanInput 
-                      type="number"
-                      onChange={(e) => handleScanInput(e)}
-                    />
-                  </StyledRoundButton>
+                  fd={"column"}
+                  ai={"center"}
+                >                   
+                  <StyledRoundButton style={{ width: '60%' }}>
+                    <Link to="/introduction" target={"_blank"} className="white">
+                      INSTRUCTIONS
+                    </Link>
+                  </StyledRoundButton>   
+                  <StyledSelectTokenDetailBlock>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        placeholder="COIN TYPE"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        placeholder="WALLET"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        placeholder="NAME"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        placeholder="COUNTRY"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">TOKEN ID</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        type="number"
+                        placeholder="TO"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">YEAR</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        type="number"
+                        placeholder="TO"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">AGE</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        className="advanced-wallet"
+                        type="number"
+                        placeholder="TO"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <StyledWalletButton
+                      style={{ marginTop: '3%' }}
+                      onClick={() => {
+                        dispatch(doSearch(true));
+                        closeModal();
+                    }}>
+                      SEARCH
+                    </StyledWalletButton>  
+                  </StyledSelectTokenDetailBlock>
                 </s.Container>
               </StyledMobileButtonGroup>  
-              <StyledWalletButton>
-                WALLET
-                <StyledWalletInput
-                  onChange={(e) => handleWalletInput(e)}
-                />
-              </StyledWalletButton>
               <StyledMobileIconGroup>
                 <StyledLink 
                   target={"_blank"} 
@@ -390,38 +477,98 @@ const Navbar = (props) => {
                   href="https://twitter.com/HOARDTOKEN"
                 >
                   <i className="fab fa-twitter"></i>
-                </StyledLink> 
-                <StyledWalletButton
-                  onClick={() => {
-                    dispatch(doSearch(true));
-                    closeModal();
-                }}>
-                  SEARCH
-                </StyledWalletButton>           
+                </StyledLink>                        
               </StyledMobileIconGroup>
               <StyledMobileClose onClick={() => setStatus("-200%")}>&times;</StyledMobileClose>     
             </StyledMyNavSideDiv>    
           </StyledMyNavSide> 
-          <Modal size="regular" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>     
-            <ModalBody>      
+          <Modal size="lg" className="advanced-modal" style={{ width: '100% !important' }} active={showModal} toggler={() => closeModal()}>     
+            <ModalBody className="advanced-modal">      
               {
                 <StyledSelectTokenGroup>
                   <StyledSelectTokenNumber>ADVANCED SEARCH</StyledSelectTokenNumber>
                   <StyledSelectTokenDetailBlock>
-                    <StyledRoundButton style={{ width: '48%', padding: '10px 1px' }}>
-                      SCAN
+                    <StyledWalletButton className="advanced-input mrb">
                       <StyledScanInput 
-                        type="number"
+                        placeholder="COIN TYPE"
+                        className="advanced-wallet"
                         onChange={(e) => handleScanInput(e)}
                       />
-                    </StyledRoundButton>
-                    <StyledWalletButton>
-                      WALLET
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
                       <StyledWalletInput
+                        placeholder="WALLET"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        placeholder="NAME"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        placeholder="COUNTRY"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">TOKEN ID</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        type="number"
+                        placeholder="TO"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">YEAR</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        type="number"
+                        placeholder="TO"
+                        className="advanced-wallet"
+                        onChange={(e) => handleWalletInput(e)}
+                      />
+                    </StyledWalletButton> 
+                    <p className="white detail-title">AGE</p>
+                    <StyledWalletButton className="advanced-input mrb">
+                      <StyledScanInput 
+                        type="number"
+                        placeholder="FROM"
+                        className="advanced-wallet"
+                        onChange={(e) => handleScanInput(e)}
+                      />
+                    </StyledWalletButton>
+                    <StyledWalletButton className="advanced-input mb">
+                      <StyledWalletInput
+                        className="advanced-wallet"
+                        type="number"
+                        placeholder="TO"
                         onChange={(e) => handleWalletInput(e)}
                       />
                     </StyledWalletButton> 
                     <StyledWalletButton
+                      style={{ marginTop: '3%' }}
                       onClick={() => {
                         dispatch(doSearch(true));
                         closeModal();
@@ -430,7 +577,8 @@ const Navbar = (props) => {
                     </StyledWalletButton>  
                   </StyledSelectTokenDetailBlock>
                 </StyledSelectTokenGroup>
-              }
+                
+              }             
             </ModalBody>
           </Modal>
         </>   

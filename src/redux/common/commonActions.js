@@ -1,5 +1,9 @@
 import axios from "axios";
-import { forEach, camelCase } from "lodash";
+import { 
+  forEach, 
+  camelCase,
+  shuffle
+} from "lodash";
 import { metadata } from "../../utils/metadata";
 
 export const saveKeyword = (payload) => {
@@ -21,22 +25,13 @@ export const loadMetaData = () => {
         if (idx > 1) {
           let item = {};
           keys.forEach((key, kIdx) => {
-            /* if (camelCase(key) === 'wordPressPathAndName') {
-              let wordPressPathAndName = '';
-  
-              if (o[kIdx + 1] && o[kIdx + 1].includes("http://hoardtoken.com")) {
-                let pathArray = o[kIdx + 1].split("http://hoardtoken.com")[1];
-                wordPressPathAndName = "http://www.cryptohoard.io" + pathArray;
-              }
-              item[camelCase(key)] =  kIdx < o.length ? wordPressPathAndName : '';
-            } else {
-              item[camelCase(key)] =  kIdx < o.length ? o[kIdx + 1] : '';
-            } */
             item[camelCase(key)] =  kIdx < o.length ? o[kIdx + 1] : '';
           });
           metaData.push(item);
         }
       });
+
+      metaData = shuffle(metaData);
 
       dispatch({ type: 'LOAD_METADATA', payload: metaData });
       return metaData;
