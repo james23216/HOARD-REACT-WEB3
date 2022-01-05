@@ -42,7 +42,6 @@ export const loadMetaData = () => {
       return metaData;
     }
     function onError(error) {
-      console.log('metadata: ', error);
       return error;
     }
     try {

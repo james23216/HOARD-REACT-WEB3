@@ -97,8 +97,6 @@ function Home() {
   const filterProduct = (type) => { 
     let tProducts = [];
     let metaData = Object.assign([], common.metaData);
-    
-    console.log('metadata2: ', metaData);
 
     tProducts = _.filter(metaData, (o) => {
       let isMatched = true;
@@ -144,8 +142,6 @@ function Home() {
 
       return isMatched;
     });
-
-    console.log('type, data', type, tProducts.length);
 
     if (type === 'fetchMoreData') {
       setProducts([...products, ...tProducts.slice((pageIndex - 1) * count, pageIndex * count)]);
@@ -234,7 +230,7 @@ function Home() {
           {
             products.map((image, index) => (
               <div 
-                className={`img ${image.purchaserWallet ? 'walletOpacity' : ''}`} 
+                className={`img ${image.purchaserWallet && !common.walletStatus ? 'walletOpacity' : ''}`} 
                 key={index}
               >
                 <img
@@ -273,7 +269,7 @@ function Home() {
                 </StyledSelectTokenGroup>
               : selectToken
                 ? <StyledSelectTokenGroup>
-                    <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} className={`${selectToken.purchaserWallet ? 'walletOpacity' : ''}`}  />
+                    <StyledSelectTokenImg alt={selectToken.incrementNumberCoin} src={selectToken.wordPressPathAndName} />
                     <StyledSelectTokenNumber>HOARD {selectToken.incrementNumberCoin}</StyledSelectTokenNumber>
                     <StyledSelectTokenStatus>{ selectToken.purchaserWallet ? 'RESERVED' : 'AVAILABLE' }</StyledSelectTokenStatus>
                     { selectToken.purchaserWallet ? <p className="text-wrap wallet-addr reserved"> {selectToken.purchaserWallet} </p> : null  }

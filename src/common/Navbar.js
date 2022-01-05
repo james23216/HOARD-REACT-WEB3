@@ -298,13 +298,13 @@ const Navbar = (props) => {
     setShowModal(false);
   }
 
-  const handleSearch = (e, key) => { 
+  const handleSearch = (e, key) => {
     dispatch(
       saveKeyword({
         key,
-        value: e.target.value
+        value: e.target.value,
       })
-    );
+    );    
   }
   
     return (
@@ -364,7 +364,18 @@ const Navbar = (props) => {
               </StyledLink>          
             </StyledIconGroup>
             <StyledMenuIcon>
-                <StyledMenuImg alt={"menu"} onClick={() => setStatus("-0.15%")} src={"/images/icon_menu.png"}></StyledMenuImg>
+                <StyledMenuImg 
+                  alt={"menu"} 
+                  onClick={
+                    () => {
+                      dispatch(resetSearchOptions());
+                      setStatus("-0.15%");
+                    }
+                  } 
+                  src={"/images/icon_menu.png"}
+                
+                >                  
+                </StyledMenuImg>
             </StyledMenuIcon>
           </StyledHeader>
           <StyledMyNavSide style={{ top: status }}>   

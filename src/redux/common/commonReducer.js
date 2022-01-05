@@ -13,21 +13,22 @@ const initialState = {
   },
   metaData: [],
   isLoadingMetaData: false,
-  isSearching: false
+  isSearching: false,
+  walletStatus: false
 };
 
-const commonReducer = (state = initialState, action) => {
+const commonReducer = (state = initialState, action) => { 
   switch (action.type) { 
     case "SAVE_KEYWORD":
       let searchOptions = Object.assign({}, state.searchOptions);
-      searchOptions[action.payload.key] = action.payload.value;
-      
+      searchOptions[action.payload.key] = action.payload.value; 
       return {
         ...state,
         searchOptions
       };
       break;
     case "RESET_KEYWORD":
+      
       return {
         ...state,
         searchOptions: {
@@ -58,9 +59,11 @@ const commonReducer = (state = initialState, action) => {
       };
       break;
     case "DO_SEARCH":
+      let walletStatus = state.searchOptions.wallet == '' ? false : true;
       return {
         ...state,
-        isSearching: action.payload
+        isSearching: action.payload,
+        walletStatus
       };
       break;
     default:
