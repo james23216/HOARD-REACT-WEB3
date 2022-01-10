@@ -244,7 +244,7 @@ function Home() {
                         loadTokenData(image.incrementNumberCoin);
                     }} 
                 />
-                {handleMetalImg(image.metal, index)}
+                {/* {handleMetalImg(image.metal, index)} */}
               </div>
             ))
           }
